@@ -1,12 +1,12 @@
 {
   "name": "@gergelyszerovay/eslint-plugin-path-boundary-imports",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
-  "private": true,
+  "private": false,
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gergelyszerovay/eslint-plugin-path-boundary-imports"
+    "url": "git+https://github.com/gergelyszerovay/eslint-plugin-path-boundary-imports.git"
   },
   "homepage": "https://github.com/gergelyszerovay/eslint-plugin-path-boundary-imports#readme",
   "keywords": [
