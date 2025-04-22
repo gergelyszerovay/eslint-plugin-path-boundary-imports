@@ -1,6 +1,6 @@
-import { join } from "path";
 import { existsSync, readFileSync } from "fs";
 import { loadTsConfig } from "load-tsconfig";
+import { join } from "path";
 
 /**
  * Helps to detect if a path exists or not
@@ -35,7 +35,7 @@ export function loadConfigFile(dir: string, filename: string): any {
       };
     }
 
-    const file = loadTsConfig(path);
+    const file = loadTsConfig(dir, filename);
 
     return file;
   } catch (error) {

@@ -1,6 +1,6 @@
-import { join, isAbsolute } from "path";
+import { isAbsolute, join } from "path";
 import { FILES } from "./constants";
-import { loadConfigFile, isFileExists, isPathExists } from "./helpers";
+import { isFileExists, isPathExists, loadConfigFile } from "./helpers";
 import { ConfigSettings } from "./types";
 
 /**
@@ -26,10 +26,17 @@ export function clearMatcher(value: string): string {
  * @param packageDir - The package directory
  * @returns Returns alias item creator
  */
-export function getAliasItemCreator(packageDir: string): (path: string, alias?: string) => AliasItem {
-  return function createAliasItem(path: string, alias: string | null = null): AliasItem {
+export function getAliasItemCreator(
+  packageDir: string
+): (path: string, alias?: string) => AliasItem {
+  return function createAliasItem(
+    path: string,
+    alias: string | null = null
+  ): AliasItem {
     return {
-      path: isAbsolute(path) ? clearMatcher(path) : join(packageDir, clearMatcher(path)),
+      path: isAbsolute(path)
+        ? clearMatcher(path)
+        : join(packageDir, clearMatcher(path)),
       alias: alias ? clearMatcher(alias) : null,
     };
   };
@@ -44,19 +51,22 @@ const CONFIG_CACHE = new Map<string, AliasItem[]>();
  * @param {ConfigSettings} settings - The config settings
  * @returns Returns array of alias items
  */
-export function getConfigSettings(packagePath: string, settings: ConfigSettings): Array<AliasItem> {
+export function getConfigSettings(
+  packagePath: string,
+  settings: ConfigSettings
+): Array<AliasItem> {
   let fileName: string | null = null;
 
-  if (isFileExists(packagePath, FILES.tsconfig)) {
-    fileName = FILES.tsconfig;
-  }
-
-  if (isFileExists(packagePath, FILES.jsconfig)) {
-    fileName = FILES.jsconfig;
-  }
-
-  if(settings?.config && isFileExists(packagePath, settings?.config)) {
+  if (settings?.config && isFileExists(packagePath, settings?.config)) {
     fileName = settings?.config;
+  } else {
+    if (isFileExists(packagePath, FILES.tsconfig)) {
+      fileName = FILES.tsconfig;
+    }
+
+    if (isFileExists(packagePath, FILES.jsconfig)) {
+      fileName = FILES.jsconfig;
+    }
   }
 
   if (fileName === null) {
@@ -75,7 +85,9 @@ export function getConfigSettings(packagePath: string, settings: ConfigSettings)
   const createAliasItem = getAliasItemCreator(packagePath);
 
   if (isPathExists(config, "data.compilerOptions.paths")) {
-    const entires: [string, string[]][] = Object.entries(config.data.compilerOptions.paths)
+    const entires: [string, string[]][] = Object.entries(
+      config.data.compilerOptions.paths
+    );
     entires.forEach(([key, paths]) =>
       paths.forEach((path) => urls.push(createAliasItem(path, key)))
     );
