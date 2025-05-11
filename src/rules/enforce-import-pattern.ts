@@ -136,7 +136,10 @@ function enforeImportPatternCreate(context: Rule.RuleContext) {
           return;
         }
       }
-      // console.log({ current, expected });
+      if (current[0] !== ".") {
+        return;
+      }
+    // console.log({ current, expected });
 
       const data = {
         current,
